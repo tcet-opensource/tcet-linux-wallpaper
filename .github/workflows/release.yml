@@ -12,23 +12,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set current date as environment variable
         run: echo "DATE=`date +'%Y.%m.%d'`" >>$GITHUB_ENV
 
       - name: Building TCET Linux Welcome Tar file
         run: |
-          touch tcet-linux-welcome.tar.gz
-          tar -czf tcet-linux-welcome.tar.gz --exclude=tcet-linux-wallpaper.tar.gz .
-          touch sha256sum.txt
-          sha256sum tcet-linux-wallpaper.tar.gz > sha256sum.txt
-      - name: Delete Previous Latest release
-        uses: dev-drprasad/delete-tag-and-release@v1.0
-        with:
-          tag_name: latest
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          delete_release: true
+          touch tcet-linux-wallpaper.tar.gz
+          tar -czf tcet-linux-wallpaper.tar.gz --exclude=tcet-linux-wallpaper.tar.gz .
+          touch checksum
+          sha256sum tcet-linux-wallpaper.tar.gz > checksum
+          
       - name: Release Tar File
         uses: ncipollo/release-action@v1
         with:
@@ -36,6 +31,7 @@ jobs:
           generateReleaseNotes: false
           name: "TCET-Linux Wallpaper"
           tag: ${{ env.DATE }}
+          
       - name: Release Tar File with latest
         uses: ncipollo/release-action@v1
         with:
