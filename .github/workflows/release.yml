@@ -19,10 +19,10 @@ jobs:
 
       - name: Building TCET Linux Welcome Tar file
         run: |
-          touch tcet-linux-wallpaper.tar.gz
-          tar -czf tcet-linux-wallpaper.tar.gz --exclude=tcet-linux-wallpaper.tar.gz .
+          touch tcet-linux-set-once.tar.gz
+          tar -czf tcet-linux-set-once.tar.gz --exclude=tcet-linux-set-once.tar.gz .
           touch checksum
-          sha256sum tcet-linux-wallpaper.tar.gz > checksum
+          sha256sum tcet-linux-set-once.tar.gz > checksum
           
       - name: Delete Previous Latest release
         uses: dev-drprasad/delete-tag-and-release@v1.0
@@ -36,7 +36,7 @@ jobs:
         with:
           artifacts: "*.tar.gz,checksum"
           generateReleaseNotes: false
-          name: "TCET-Linux Wallpaper"
+          name: "TCET-linux-set-once"
           tag: ${{ env.DATE }}
 
       - name: Release Tar File with latest
@@ -44,5 +44,5 @@ jobs:
         with:
           artifacts: "*.tar.gz,checksum"
           generateReleaseNotes: false
-          name: "TCET-Linux Wallpaper"
+          name: "TCET-linux-set-once"
           tag: latest
