@@ -34,7 +34,7 @@ jobs:
       - name: Release Tar File
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "*.tar.gz,sha256sum.txt"
+          artifacts: "*.tar.gz,checksum"
           generateReleaseNotes: false
           name: "TCET-Linux Wallpaper"
           tag: ${{ env.DATE }}
@@ -42,7 +42,7 @@ jobs:
       - name: Release Tar File with latest
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "*.tar.gz,sha256sum.txt"
+          artifacts: "*.tar.gz,checksum"
           generateReleaseNotes: false
           name: "TCET-Linux Wallpaper"
           tag: latest
