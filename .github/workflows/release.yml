@@ -25,6 +25,8 @@ jobs:
           tar -czf tcet-linux-wallpaper.tar.gz tcet-linux-wallpaper/
           touch checksum
           sha256sum tcet-linux-wallpaper.tar.gz > checksum
+          mv checksum tcet-linux-wallpaper/
+          mv tcet-linux-wallpaper.tar.gz tcet-linux-wallpaper/
           ls -la
           
       - name: Delete Previous Latest release
