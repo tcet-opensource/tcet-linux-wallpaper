@@ -19,8 +19,8 @@ jobs:
 
       - name: Building TCET Linux Welcome Tar file
         run: |
-          touch tcet-linux-wallpaper.tar.gz
-          tar -czf tcet-linux-wallpaper.tar.gz --exclude=tcet-linux-wallpaper.tar.gz .
+          cd ..
+          tar -czf tcet-linux-wallpaper.tar.gz tcet-linux-wallpaper/
           touch checksum
           sha256sum tcet-linux-wallpaper.tar.gz > checksum
           
