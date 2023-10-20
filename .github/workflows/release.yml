@@ -1,6 +1,9 @@
 name: Release
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -9,6 +12,8 @@ jobs:
 
     permissions:
       contents: write
+    env: 
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout
@@ -19,35 +24,20 @@ jobs:
 
       - name: Building TCET Linux Welcome Tar file
         run: |
-          ls -la
           cd ..
-          ls -la
+          touch tcet-linux-wallpaper.tar.gz
           tar -czf tcet-linux-wallpaper.tar.gz tcet-linux-wallpaper/
           touch checksum
           sha256sum tcet-linux-wallpaper.tar.gz > checksum
           mv checksum tcet-linux-wallpaper/
           mv tcet-linux-wallpaper.tar.gz tcet-linux-wallpaper/
-          ls -la
           
       - name: Delete Previous Latest release
-        uses: dev-drprasad/delete-tag-and-release@v1.0
-        with:
-          tag_name: latest
-          github_token: ${{ secrets.PAT_TOKEN }}
-          delete_release: true
-          
+        run: |
+          gh release delete latest
       - name: Release Tar File
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "*.tar.gz,checksum"
-          generateReleaseNotes: false
-          name: "TCET-Linux Wallpaper"
-          tag: ${{ env.DATE }}
-
+        run: |
+          gh release create ${{ env.DATE }} *tar.gz checksum --title "TCET-Linux Wallpaper"
       - name: Release Tar File with latest
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "*.tar.gz,checksum"
-          generateReleaseNotes: false
-          name: "TCET-Linux Wallpaper"
-          tag: latest
+        run: |
+          gh release create latest *tar.gz checksum --latest --title "TCET-Linux Wallpaper"
