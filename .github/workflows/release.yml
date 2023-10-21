@@ -17,7 +17,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 
+        with:
+          fetch-depth: 0
 
       - name: Set current date as environment variable
         run: echo "DATE=`date +'%Y.%m.%d'`" >>$GITHUB_ENV
@@ -32,7 +34,31 @@ jobs:
           mv checksum tcet-linux-wallpaper/
           mv tcet-linux-wallpaper.tar.gz tcet-linux-wallpaper/
           
+      - name: Checking if release with date tag exist
+        run: |
+          tag=${{ env.DATE }}
+          if gh release view $tag; then
+            echo "RELEASE_EXISTS=true" >> $GITHUB_ENV 
+          else
+            echo "RELEASE_EXISTS=false" >> $GITHUB_ENV
+          fi
+          
+      - name: Checking if release with latest tag exist
+        run: |
+          tag=latest
+          if gh release view $tag; then
+            echo "LATEST_RELEASE_EXISTS=true" >> $GITHUB_ENV 
+          else
+            echo "LATEST_RELEASE_EXISTS=false" >> $GITHUB_ENV
+          fi
+          
+      - name: Deleting Dated release
+        if: env.RELEASE_EXISTS == 'true'
+        run: |
+          gh release delete ${{ env.DATE }}
+          
       - name: Delete Previous Latest release
+        if: env.LATEST_RELEASE_EXISTS == 'true'
         run: |
           gh release delete latest
       - name: Release Tar File
